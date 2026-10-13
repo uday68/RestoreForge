@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  ## PostgreSQL database for RestoreForge
   postgres:
     image: postgres:16-alpine
     container_name: restoreforge-postgres
@@ -10,10 +11,12 @@ services:
       POSTGRES_DB: restoreforge
     ports:
       - "5432:5432"
+    # PostgreSQL data volume because we want to persist the data even if the container is removed 
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ../../migrations:/docker-entrypoint-initdb.d:ro
     healthcheck:
+    #pg_isready is a utility that checks the connection to the postgres database. It returns 0 if the connection is successful, and 1 if it fails.
       test: ["CMD-SHELL", "pg_isready -U restoreforge -d restoreforge"]
       interval: 5s
       timeout: 5s
@@ -37,6 +40,10 @@ services:
       timeout: 5s
       retries: 5
 
+
+
+# API service for RestoreForge
+#worker service for  RestoreForge ,why we need worker service? because we want to run the background jobs like sending emails, processing file, etc. we don't want to block the main thread of the application, so we run these jobs in the background using worker service.
   api:
     build:
       context: ../..
@@ -75,6 +82,8 @@ services:
       POSTGRES_USER: restoreforge
       POSTGRES_PASSWORD: restoreforge_secret
       POSTGRES_DB: restoreforge
+      #reson to minio:9000 is because we want to connect to the minio service running in the same docker network, and the minio service is running on port 9000, so we use minio:9000 to connect to the minio service.
+      #what is minio? minio is an open source object storage server that is compatible with amazon s3 cloud storage service. we use minio to store the large binary files, images, backups, documents, etc. that are uploaded by the users of RestoreForge.
       S3_ENDPOINT: minio:9000
       S3_ACCESS_KEY: minioadmin
       S3_SECRET_KEY: minioadmin
