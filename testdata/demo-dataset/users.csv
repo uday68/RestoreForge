@@ -1,0 +1,7 @@
+id,username,email,role,created_at
+101,alice,alice@example.com,admin,2026-01-15T08:00:00Z
+102,bob,bob@example.com,editor,2026-02-01T09:30:00Z
+103,charlie,charlie@example.com,viewer,2026-02-15T11:45:00Z
+104,diana,diana@example.com,editor,2026-03-01T14:10:00Z
+105,evan,evan@example.com,viewer,2026-03-10T16:20:00Z
+

@@ -1,0 +1,19 @@
+{
+  "application": "RestoreForgeDemo",
+  "version": "1.0.0",
+  "features": {
+    "deduplication": true,
+    "content_addressed_storage": true,
+    "incremental_backups": true,
+    "audit_logging": true
+  },
+  "retention_policy": {
+    "keep_days": 30,
+    "max_versions": 10
+  },
+  "storage": {
+    "chunk_size_kb": 1024,
+    "hashing_algorithm": "SHA-256"
+  }
+}
+
